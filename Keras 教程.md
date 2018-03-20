@@ -11,9 +11,15 @@
 ### Github Tutor
 
 - [Collection of tutorials setting up DNNs with Keras](http://ml4a.github.io/guides/)
-- [Companion Jupyter notebooks for the book "Deep Learning with Python"](https://github.com/fchollet/deep-learning-with-python-notebooks)
+
+- [ Jupyter notebooks for the book "Deep Learning with Python"](https://github.com/fchollet/deep-learning-with-python-notebooks) star-2,975
   知名的神經網路套件Keras的作者François Chollet，日前剛開源了一個github repo，裡面包含了所有他寫的新書"Deep Learning with Python"中所有的範例notebooks (都是用Keras寫的) 非常適合快速上手搭建模型，也更容易理解吸收原理 ！
-- ​
+
+- [deep-learning-keras-tensorflow](https://github.com/leriomaggio/deep-learning-keras-tensorflow) star-1,902
+
+- [Keras resources](https://github.com/fchollet/keras-resources)
+
+  fchollet. This is a directory of tutorials and open-source code repositories for working with Keras, the Python deep learning library. 
 
 ###视频
 

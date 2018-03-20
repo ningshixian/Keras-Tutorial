@@ -22,7 +22,7 @@ def to_one_hot(labels, dimension=46):
 
 
 
-- There are two ways to handle labels in multi-class classification: Encoding the labels via "categorical encoding" (also known as "one-hot encoding") and using categorical_crossentropy as your loss function. Encoding the labels as integers and using the sparse_categorical_crossentropy loss function.
+- There are two ways to handle labels in multi-class classification: Encoding the labels via "categorical encoding" (also known as "one-hot encoding") and using `categorical_crossentropy` as your loss function. Encoding the labels as integers and using the `sparse_categorical_crossentropy` loss function.
 - Overfitting: the performance (validation loss?) of our model on the held-out validation data would always peak after a few epochs and would then start degrading, i.e. our model would quickly start to _overfit_ to the training data.
 - "Optimization" refers to the process of adjusting a model to get the best performance possible on the training data (the "learning" in "machine learning"), 
 - while "generalization" refers to how well the trained model would perform on data it has never seen before. The goal of the game is to get good generalization, of course, but you do not control generalization; you can only adjust the model based on its training data.
@@ -236,7 +236,7 @@ for mean, stdev, param in zip(means, stds, params):
 
 
 
-- 保存自定义模型
+- keras保存和加载自定义损失模型
 
   如果使用了自定义的loss函数， 则需要在加载模型的时候，指定load_model函数提供的一个custom_objects参数：在custom_objects参数词典里加入keras的未知参数，如：
 
@@ -245,7 +245,15 @@ for mean, stdev, param in zip(means, stds, params):
   model = load_model('model/tmpModel.h5', custom_objects=create_custom_objects())
   ```
 
-  ​
+[Failing to Implement a Custom Objective Function #4920](https://github.com/fchollet/keras/issues/4920)
+
+
+
+- ResourceExhaustedError: OOM when allocating tensor with shape
+
+  意思就是GPU的内存不够了，检查下是否有其他程序占用，不行就重启下IDE，或kill 进程ID
+
+
 
 - 通过生成器的方式训练模型，节省内存
 
@@ -276,9 +284,14 @@ for mean, stdev, param in zip(means, stds, params):
 
 
 - 编写自己的层
+
+  对于简单的定制操作，我们或许可以通过使用layers.core.Lambda层来完成。
+
+  要定制自己的层，你需要实现下面三个方法:
+
   - build(input_shape)：这是定义权重的方法
-  - call(x)：这是定义层功能的方法
-  - compute_output_shape(input_shape)：如果你的层修改了输入数据的shape，你应该在这里指定shape变化的方法
+  - call(x)：这是定义层功能的方法，除非你希望你写的层支持masking，否则你只需要关心call的第一个参数：输入张量
+  - compute_output_shape(input_shape)：如果你的层修改了输入数据的shape，你应该在这里指定shape变化的方法，这个函数使得Keras可以做自动shape推断
 
 ```python
 from keras import backend as K
@@ -305,6 +318,14 @@ class MyLayer(Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.output_dim)
 ```
+
+
+
+- np.argmax() 
+
+  预测概率转换
+
+  `print np.argmax(y_pred, axis=-1)`
 
 
 
@@ -350,5 +371,26 @@ def calculate(predictions, test_label, RESULT_FILE):
    print("precision= ", precision)
    print("recall= ", recall)
    print("Fscore= ", Fscore)
+```
+
+
+
+- keras 获取中间层的输出
+
+```python
+# 加载权重到当前模型
+model = load_model(model_path)
+
+'''获取中间层的输出'''
+layer_name = 'my_layer'
+intermediate_layer_model = Model(input=model.input,
+                         output=model.get_layer(layer_name).output)
+
+intermediate_output = intermediate_layer_model.predict(X_test)
+print(type(intermediate_output))
+
+with open('intermediate_output.txt', 'w') as f:
+   for i in intermediate_output:
+      f.write(i)
 ```
 

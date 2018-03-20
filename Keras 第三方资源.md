@@ -28,6 +28,16 @@
 
   用Keras 学习深度学习：汇集了许多深度学习的资源。
 
+- [Hualos - Keras Total Visualization project](https://github.com/fchollet/hualos)
+
+  动态显示模型训练过程的acc和loss变化情况
+
+- [keras-adversarial](https://github.com/bstriner/keras-adversarial)
+
+  keras 的对抗生成网络库
+
+- [keras-team / keras](https://github.com/ningshixian?page=3&tab=stars)
+
 - ​
 
 
@@ -40,6 +50,9 @@
 - [Conx](https://conx.readthedocs.io/) - easy-to-use layer on top of Keras, with visualizations (eg, no knowledge of numpy needed)
 - [神经张量网络NTN-文本实体关系探究-Keras](http://deeplearn-ai.com/2017/11/21/neural-tensor-network-exploring-relations-among-text-entities/?i=2)
 - [keras实现BiLSTM+CNN+CRF文字标记NER](http://blog.csdn.net/xinfeng2005/article/details/78485748)
+- [A Neural Network Multi-Task Learning Approach to Biomedical Named Entity Recognition](https://github.com/cambridgeltl/MTL-Bioinformatics-2016)
+  - 多任务
+  - 包括各种预处理好的生物医学的语料
 - Linear Chain CRF layer 实现
   - [Linear Chain CRF layer and a text chunking example#4621](https://github.com/pressrelations/keras/blob/98b2bb152b8d472150a3fc4f91396ce7f767bed9/keras/layers/crf.py)
   - [CRF for keras 2.0 #6226](https://github.com/fchollet/keras/pull/6226/commits/8c10628875a8190a7eab596fcf524a7dff346366)

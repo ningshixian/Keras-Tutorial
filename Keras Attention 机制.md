@@ -41,6 +41,9 @@
 
   代码的讲解对应上面的资料《Deep Language Modeling for Question Answering using Keras》
 
+  - attention_lstm_
+  - 词向量生成
+
 - [Attention and Augmented Recurrent Neural Networks](https://github.com/fchollet/keras/issues/1472)
 
 - [How to add Attention on top of a Recurrent Layer (Text Classification)](https://github.com/fchollet/keras/issues/4962)
@@ -53,7 +56,16 @@
 
 - [seq2seq library](https://github.com/farizrahman4u/seq2seq)
 
+- [keras-attention](https://github.com/datalogue/keras-attention/blob/master/models/custom_recurrents.py)
+
 
 - [基于Attention Model的Aspect level文本情感分类---用Python+Keras实现](http://blog.csdn.net/orlandowww/article/details/53897634)
 - [Keras 自注意力层实现](http://blog.csdn.net/mpk_no1/article/details/72862348)
 - [可视化您的递归神经网络以及关注Keras](https://medium.com/datalogue/attention-in-keras-1892773a4f22) ” 的帖子提供了支持，GitHub项目名为“ [keras-attention](https://github.com/datalogue/keras-attention) ”
+- [《Attention is All You Need》中的Attention机制的实现](https://github.com/bojone/attention)
+- [dl-models-for-qa](https://github.com/sujitpal/dl-models-for-qa)
+  - QA-LSTM CNN
+  - QA-LSTM with Attention
+  - Incorporating External Knowledge
+  - QA-LSTM with Attention and Custom Embedding
+- ​
