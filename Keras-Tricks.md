@@ -196,9 +196,10 @@ for mean, stdev, param in zip(means, stds, params):
   ```python
   import tensorflow as tf
   from keras.backend.tensorflow_backend import set_session
+
   config = tf.ConfigProto()
   config.gpu_options.per_process_gpu_memory_fraction = 0.3
-  \# config.gpu_options.allow_growth=True
+  config.gpu_options.allow_growth=True
   set_session(tf.Session(config=config))
   ```
 
@@ -208,26 +209,22 @@ for mean, stdev, param in zip(means, stds, params):
 
   ​
 
-  - 方法2：指定GPU
 
-  ```
-  import os
-  os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-  ```
+- Keras 切换后端（Theano和TensorFlow）
 
-  ​
+  ~/.keras/keras.json
 
-  - 方法3：使用固定显存的GPU+指定GPU
+```python
+用thesorflow的话，keras.json写入
+{
+    "image_dim_ordering": "tf", 
+    "epsilon": 1e-07, 
+    "floatx": "float32", 
+    "backend": "tensorflow"
+}
+```
 
-  ```python
-  import os
-  import tensorflow as tf
-  os.environ["CUDA_VISIBLE_DEVICES"] = "2"
-  from keras.backend.tensorflow_backend import set_session
-  config = tf.ConfigProto()
-  config.gpu_options.per_process_gpu_memory_fraction = 0.3
-  set_session(tf.Session(config=config))
-  ```
+
 
 
 
