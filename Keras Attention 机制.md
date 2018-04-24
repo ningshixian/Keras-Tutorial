@@ -4,9 +4,11 @@
 
 如果你想进一步地学习如何在LSTM/RNN模型中加入attention机制，可阅读以下论文：
 
+- [Attention in Long Short-Term Memory Recurrent Neural Networks-by Jason Brownlee ](https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/)
+
 - [Attention and Augmented Recurrent Neural Networks](https://distill.pub/2016/augmented-rnns/)
 
-- [Deep Language Modeling for Question Answering using Keras](https://codekansas.github.io/blog/2016/language.html)
+- [Deep Language Modeling for Question Answering using Keras-codekansas](https://codekansas.github.io/blog/2016/language.html)
 
   简单介绍了Keras的使用，以及细致讲解了简单的 Attentional LSTM 模型实现！！！
 
@@ -39,7 +41,7 @@
 
 - [keras-language-modeling](https://github.com/codekansas/keras-language-modeling/blob/master/keras_models.py)
 
-  代码的讲解对应上面的资料《Deep Language Modeling for Question Answering using Keras》
+  代码的讲解对应上面的资料《Deep Language Modeling for Question Answering using Keras》，但是Keras 1.x 的版本已经无法使用。
 
   - attention_lstm_
   - 词向量生成
@@ -56,7 +58,15 @@
 
 - [seq2seq library](https://github.com/farizrahman4u/seq2seq)
 
+
+
+
 - [keras-attention](https://github.com/datalogue/keras-attention/blob/master/models/custom_recurrents.py)
+
+  Zafarali Ahmed an intern at Datalogue developed a custom layer for Keras that provides support for attention, presented in a post titled “[How to Visualize Your Recurrent Neural Network with Attention in Keras](https://medium.com/datalogue/attention-in-keras-1892773a4f22)” in 2017 and GitHub project called “keras-attention“.
+
+  - custom_recurrents.py
+  - tdd.py
 
 
 - [基于Attention Model的Aspect level文本情感分类---用Python+Keras实现](http://blog.csdn.net/orlandowww/article/details/53897634)
