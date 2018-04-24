@@ -2,8 +2,8 @@
 
 ####1. 关于训练集，验证集和测试集
 
-- 训练集需要一开始shuffle
 - 验证集是从训练集中抽取出来用于调参的，在validation_split中设置
+  - 用 Keras 的 `validation_split` 之前要記得把資料先弄亂，因為它會從資料的最尾端開始取，如果沒有弄亂的話切出來的資料 bias 會很大。可以使用 `np.shuffle` 來弄亂
 - 测试集是和训练集无交集的，用于测试所选参数用于该模型的效果的。在evaluate函数里设置
 
 ####2. 查看模型的评价指标
@@ -74,16 +74,15 @@ class WritePRF(Callback):
    def on_epoch_end(self, epoch, logs=None):
       
 # 该回调函数将在每个迭代后保存的最好模型
-class checkpoint():
-  def __init__(self, model_file):
-      self.model_file = model_file
+from keras.callbacks import ModelCheckpoint  
 
-  def check(self):
-      checkpoint = ModelCheckpoint(filepath=self.model_file, monitor='val_loss',
-                  verbose=1, save_best_only=True, mode='min')
-      return checkpoint
-
-write_call = WritePRF(filepath=RESULT_FILE, data=X_test, label=test_label)
+checkpoint = ModelCheckpoint(  
+    'model.h5',  
+    monitor = 'val_loss',  
+    verbose = 1,  
+    save_best_only = True,  
+    mode = 'min',  
+) 
 ```
 
 ####7. Grid Search Hyperparameters 网格搜索
@@ -243,6 +242,10 @@ with open('intermediate_output.txt', 'w') as f:
   - 优化器公用参数 clipnorm 和 clipvalue
     - 参数一：clipnorm 对梯度进行裁剪，最大值为1
     - 参数二：clipvalue 对梯度范围进行裁剪，范围（-x，x）
+  - 一般的起手式: Adam
+  - Keras 推薦 RNN 使用 RMSProp
+    - 在訓練 RNN 需要注意 explosive gradient 的問題 => clip gradient 的暴力美學
+    - `opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)`
   - 可以直接在sgd声明函数中修改参数来直接修改学习率，学习率变化如下图：
 
 ```
@@ -259,8 +262,16 @@ the performance (validation loss?) of our model on the held-out validation data 
 
 - 防止过拟合的方法
   - 第一种就是添加dropout层，dropout可以放在很多类层的后面，用来抑制过拟合现象，常见的可以直接放在Dense层后面，一般在Dropout设置0.5。Dropout相当于Ensemble，dropout过大相当于多个模型的结合，一些差模型会拉低训练集的精度。
+    - 通常只加在 hidden layer，不會加在 output layer，因為影響太大了，除非 output layer 的 dimension 很大。
+    - Dropout 會讓 training performance 變差
+    - 參數少時，regularization
   - 第二种是使用参数正则化，也就是在一些层的声明中加入L1或L2正则化系数，在一定程度上提升了模型的泛化能力。`kernel_regularizer=regularizers.l2(0.001)`
   - Reducing the network's size： The simplest way to prevent overfitting is to reduce the size of the model, i.e. the number of learnable parameters in the model
+  - Early Stopping
+    - 希望在 Model overfitting 之前就停止 training
+    - Early Stopping in Keras
+      - `from keras.callbacks import EarlyStopping`
+      - `early_stopping=EarlyStopping(monitor='val_loss', patience=3)`
 
 ####14. Batchnormalization层的放置问题
 
@@ -317,25 +328,42 @@ while "generalization" refers to how well the trained model would perform on dat
 - Because RNNs are extremely expensive for processing very long sequences, but 1D convnets are cheap, it can be a good idea to use a 1D convnet as a preprocessing step before a RNN, shortening the sequence and extracting useful representations for the RNN to process.
 
 
+#### 20. 使用预训练模型的权重
+
+```python
+WEIGHTS_PATH = 'bottleneck_fc_model.h5'
+model1.save_weights(WEIGHTS_PATH)
+model2.load_weights(WEIGHTS_PATH)
+# layer.trainable = False
+model2.fit()
+```
+
 
 
 ---
 
 常见问题和解决方法
 
-- 如果训练中发现loss的值为NAN，这时可能的原因如下：
+- ####如果训练中发现loss的值为NAN，这时可能的原因如下：
+
   - 学习率太高: loss爆炸, 或者nan
   - 学习率太小: 半天loss没反映
   - relu作为激活函数?
   - 如果是自己定义的损失函数，这时候可能是你设计的损失函数有问题
   - [训练DL，出现Loss=nan](evernote:///view/1937456/s4/177cd2ff-02a7-4294-8081-8454a219fcfc/177cd2ff-02a7-4294-8081-8454a219fcfc/)
-- ResourceExhaustedError: OOM when allocating tensor with shape
+
+- ####loss为负数 
+
+  - 如果出现loss为负，是因为之前多分类的标签哪些设置不对，现在是5分类的，写成了2分类之后导致了Loss为负数
+  - 也可能是损失函数选择错误导致
+
+- ####ResourceExhaustedError: OOM when allocating tensor with shape
 
 意思就是GPU的内存不够了，检查下是否有其他程序占用，不行就重启下IDE，或kill 进程ID
 
 - [Failing to Implement a Custom Objective Function #4920](https://github.com/fchollet/keras/issues/4920)
 
-- keras指定显卡且限制显存用量
+- ####keras指定显卡且限制显存用量
 
   keras在使用GPU的时候有个特点，就是默认全部占满显存。需要修改后端代码：
 
@@ -354,7 +382,7 @@ while "generalization" refers to how well the trained model would perform on dat
   需要注意的是，虽然代码或配置层面设置了对显存占用百分比阈值，但在实际运行中如果达到了这个阈值，程序有需要的话还是会突破这个阈值。换而言之如果跑在一个大数据集上还是会用到更多的显存。以上的显存限制仅仅为了在跑小数据集时避免对显存的浪费而已。
 
 
-- Keras 切换后端（Theano和TensorFlow）
+- ####Keras 切换后端（Theano和TensorFlow）
 
   ~/.keras/keras.json
 
