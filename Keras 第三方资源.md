@@ -38,7 +38,7 @@
 
 - [keras-team / keras](https://github.com/ningshixian?page=3&tab=stars)
 
-- ​
+- ​[Keras资源](https://github.com/fchollet/keras-resources)（Github Keras作者整理的资源合集）
 
 
 
@@ -50,6 +50,7 @@
 - [Conx](https://conx.readthedocs.io/) - easy-to-use layer on top of Keras, with visualizations (eg, no knowledge of numpy needed)
 - [神经张量网络NTN-文本实体关系探究-Keras](http://deeplearn-ai.com/2017/11/21/neural-tensor-network-exploring-relations-among-text-entities/?i=2)
 - [keras实现BiLSTM+CNN+CRF文字标记NER](http://blog.csdn.net/xinfeng2005/article/details/78485748)
+- [如何训练你的深度神经网络](https://rishy.github.io/ml/2017/01/05/how-to-train-your-dnn/)——有多少层，参数等
 - [A Neural Network Multi-Task Learning Approach to Biomedical Named Entity Recognition](https://github.com/cambridgeltl/MTL-Bioinformatics-2016)
   - 多任务
   - 包括各种预处理好的生物医学的语料
@@ -89,5 +90,5 @@ class KMaxPooling(Layer):
         return Flatten()(top_k)
 ```
 
-
+- 《Yes you should understand backprop》——Andrej Karpathy
 
